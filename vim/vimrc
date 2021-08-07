@@ -22,15 +22,14 @@ highlight ColorColumn ctermbg=0 guibg=lightgrey
 call plug#begin('~/.vim/plugged')
 Plug 'morhetz/gruvbox'
 Plug 'tomasiser/vim-code-dark'
-Plug 'jremmen/vim-ripgrep'
-Plug 'tpope/vim-fugitive'
 Plug 'vim-utils/vim-man'
 Plug 'lyuts/vim-rtags'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'mbbill/undotree'
 Plug 'preservim/nerdtree'
 Plug 'shinchu/lightline-gruvbox.vim'
 Plug 'Yggdroot/indentLine'
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 call plug#end()
 
 colorscheme gruvbox
@@ -60,8 +59,10 @@ nnoremap <silent> <Leader>+ :vertical resize +5<CR>
 nnoremap <silent> <Leader>- :vertical resize -5<CR>
 
 "Search files shortcuts
-nnoremap <leader>pf :Rg<SPACE>
-nnoremap <leader>pp :CtrlP .<CR> 
+nnoremap <leader>pf :Ag<SPACE>
+nnoremap <leader>pp :Files<CR> 
+nnoremap <leader>b :Buffers<CR> 
+nnoremap <leader>f :Lines<CR> 
 
 "NERDTree shortcuts
 nnoremap <leader>ps :NERDTreeToggle<CR>
