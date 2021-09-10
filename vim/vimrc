@@ -67,7 +67,7 @@ nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>f :Lines<CR> 
 
 "NERDTree shortcuts
-nnoremap <leader><C-j> :NERDTreeToggle<CR>
+nnoremap <leader><C-b> :NERDTreeToggle<CR>
 
 "COC shortcuts
 function! s:show_documentation()
