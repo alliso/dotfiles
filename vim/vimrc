@@ -23,7 +23,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'morhetz/gruvbox'
 Plug 'tomasiser/vim-code-dark'
 Plug 'vim-utils/vim-man'
-Plug 'lyuts/vim-rtags'
 Plug 'mbbill/undotree'
 Plug 'preservim/nerdtree'
 Plug 'shinchu/lightline-gruvbox.vim'
