@@ -117,6 +117,8 @@ alias cdbranch='cd $(ls /home/alliso/svn/DIALAPPLET/branches/ | fzf | xargs -I A
 alias cdtag='cd $(ls /home/alliso/svn/DIALAPPLET/tags/ | fzf | xargs -I ARG echo /home/alliso/svn/DIALAPPLET/tags/ARG)'
 alias cdtrunk='cd /home/alliso/svn/DIALAPPLET/trunk/'
 
+alias dbash='docker exec -it $(docker ps --format "{{.Names}}" | fzf ) bash'
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 if type rg &> /dev/null; then
