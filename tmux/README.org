@@ -1,4 +1,4 @@
-#+title: Readme
+#+title: Tmux
 #+PROPERTY: header-args :tangle tmux.conf
 
 * Tmux config

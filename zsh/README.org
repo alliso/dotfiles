@@ -1,4 +1,4 @@
-#+title: Readme
+#+title: Zsh
 #+PROPERTY: header-args :tangle zshrc
 
 * Enable p10k
