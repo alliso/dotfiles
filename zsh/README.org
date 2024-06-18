@@ -10,10 +10,12 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 #+END_SRC
-* Path
+* Path and editor
 #+BEGIN_SRC conf
 # If you come from bash you might have to change your $PATH.
 export PATH="$HOME/bin:/usr/local/bin:/Users/alliso/go/bin:$PATH"
+
+export EDITOR="nvim"
 #+END_SRC
 * Oh-my-zsh config
 #+BEGIN_SRC conf
@@ -38,6 +40,7 @@ source $ZSH/oh-my-zsh.sh
 source $CUSTOM_FUNCTIONS/mongo.zsh
 source $CUSTOM_FUNCTIONS/obsidian.zsh
 source $CUSTOM_FUNCTIONS/kafka.zsh
+source $CUSTOM_FUNCTIONS/zellij.zsh
 source $CUSTOM_FUNCTIONS/secrets.zsh
 eval "$(zoxide init zsh)"
 #+END_SRC
@@ -69,3 +72,44 @@ if type rg &> /dev/null; then
   export FZF_DEFAULT_OPTS='-m --height 50% --border'
 fi
 #+END_SRC
+* Extra
+** Mongo
+#+begin_src conf :tangle custom/mongo.zsh
+alias mecfs='mongo-exporter-cli -mongo-from=$MONGO_STA -mongo-to=$MONGO_LOCAL'
+#+end_src
+** Obsidian
+#+begin_src conf :tangle custom/obsidian.zsh
+function on(){
+ if [ $# -lt 1 ]
+  then
+    echo "Usage: $funcstack[1] <file-name> "
+    return
+  fi
+  filename=$1.md
+  tmux new-session -A "cd /Users/alliso/Documents/obsidian-vaults/ctt/inbox && touch $filename && nvim $filename"
+}
+
+function oe(){
+ if [ $# -lt 1 ]
+  then
+    echo "Usage: $funcstack[1] <file-name> "
+    return
+  fi
+  filename=$1.md
+  sname="obsidian-creator"
+  tmux new-session -D -s $sname -A "cd /Users/alliso/Documents/obsidian-vaults/ctt/inbox && touch $filename && nvim $filename"
+  tmux send-keys -t $name ":ObsidianTemplate drawing_template"
+  tmux kill-session -t $name
+  open obsidian://vault/ctt/$filename
+}
+#+end_src
+** Kafka
+#+begin_src conf :tangle custom/kafka.zsh
+function kgp() {
+  kafka-go-producer --topic=$(pwd | awk -F'/' '{print $NF}') --file=$1
+}
+#+end_src
+** Zellij
+#+begin_src conf :tangle custom/zellij.zsh
+alias zj='zellij'
+#+end_src

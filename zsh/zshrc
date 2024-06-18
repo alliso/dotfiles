@@ -8,6 +8,8 @@ fi
 # If you come from bash you might have to change your $PATH.
 export PATH="$HOME/bin:/usr/local/bin:/Users/alliso/go/bin:$PATH"
 
+export EDITOR="nvim"
+
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/alliso/Documents/dotfiles/zsh/oh-my-zsh"
 
@@ -24,6 +26,7 @@ source $ZSH/oh-my-zsh.sh
 source $CUSTOM_FUNCTIONS/mongo.zsh
 source $CUSTOM_FUNCTIONS/obsidian.zsh
 source $CUSTOM_FUNCTIONS/kafka.zsh
+source $CUSTOM_FUNCTIONS/zellij.zsh
 source $CUSTOM_FUNCTIONS/secrets.zsh
 eval "$(zoxide init zsh)"
 
