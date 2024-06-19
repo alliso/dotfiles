@@ -31,3 +31,138 @@ config.font_size = 14
 #+BEGIN_SRC lua :tangle wezterm/wezterm.lua
 return config
 #+END_SRC
+* Zsh
+** Enable p10k
+#+BEGIN_SRC conf :tangle zsh/zshrc
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+#+END_SRC
+** Path and editor
+#+BEGIN_SRC conf :tangle zsh/zshrc
+# If you come from bash you might have to change your $PATH.
+export PATH="$HOME/bin:/usr/local/bin:/Users/alliso/go/bin:$PATH"
+
+export EDITOR="nvim"
+#+END_SRC
+** Oh-my-zsh config
+#+BEGIN_SRC conf :tangle zsh/zshrc
+
+# Path to your oh-my-zsh installation.
+export ZSH="/Users/alliso/Documents/dotfiles/zsh/oh-my-zsh"
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+ZSH_THEME="powerlevel10k/powerlevel10k"
+CUSTOM_FUNCTIONS="/Users/alliso/Documents/dotfiles/zsh/custom"
+ZELLIJ_CONFIG_DIR="/Users/alliso/.config/zellij"
+#+END_SRC
+** Plugins
+#+BEGIN_SRC conf :tangle zsh/zshrc
+plugins=(git)
+#+END_SRC
+** Sources
+#+BEGIN_SRC conf :tangle zsh/zshrc
+source $ZSH/oh-my-zsh.sh
+source $CUSTOM_FUNCTIONS/navigation.zsh
+source $CUSTOM_FUNCTIONS/mongo.zsh
+source $CUSTOM_FUNCTIONS/obsidian.zsh
+source $CUSTOM_FUNCTIONS/kafka.zsh
+source $CUSTOM_FUNCTIONS/zellij.zsh
+source $CUSTOM_FUNCTIONS/secrets.zsh
+eval "$(zoxide init zsh)"
+#+END_SRC
+** Prompt p10k
+#+BEGIN_SRC conf :tangle zsh/zshrc
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+#+END_SRC
+** Tmux config
+#+BEGIN_SRC conf :tangle zsh/zshrc
+alias tmux="TERM=xterm-256color tmux"
+export TERM=xterm-256color
+
+alias tat="tmux a -t"
+#+END_SRC
+** Custom aliases
+#+BEGIN_SRC conf :tangle zsh/zshrc
+alias dbash='docker exec -it $(docker ps --format "{{.Names}}" | fzf ) bash'
+#+END_SRC
+** Fzf config
+#+BEGIN_SRC conf :tangle zsh/zshrc
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+if type rg &> /dev/null; then
+  export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
+  export FZF_DEFAULT_OPTS='-m --height 50% --border'
+fi
+#+END_SRC
+** Extra
+*** Navigation
+#+begin_src conf :tangle zsh/custom/navigation.zsh
+function cds(){
+   dir=$(ls /Users/alliso/Documents/services/ | fzf)
+   full_dir="/Users/alliso/Documents/services/$dir"
+
+   zellij options --session-name $dir --default-cwd $full_dir --default-layout /Users/alliso/Documents/dotfiles/zellij/layout.kdl
+}
+
+function cdr(){
+   dir=$(ls /Users/alliso/Documents/CTT/ | fzf)
+   full_dir="/Users/alliso/Documents/CTT/$dir"
+
+   zellij options --session-name $dir --default-cwd $full_dir
+}
+
+#+end_src
+*** Mongo
+#+begin_src conf :tangle zsh/custom/mongo.zsh
+alias mecfs='mongo-exporter-cli -mongo-from=$MONGO_STA -mongo-to=$MONGO_LOCAL'
+#+end_src
+*** Obsidian
+#+begin_src conf :tangle zsh/custom/obsidian.zsh
+function on(){
+ if [ $# -lt 1 ]
+  then
+    echo "Usage: $funcstack[1] <file-name> "
+    return
+  fi
+  filename=$1.md
+  tmux new-session -A "cd /Users/alliso/Documents/obsidian-vaults/ctt/inbox && touch $filename && nvim $filename"
+}
+
+function oe(){
+ if [ $# -lt 1 ]
+  then
+    echo "Usage: $funcstack[1] <file-name> "
+    return
+  fi
+  filename=$1.md
+  sname="obsidian-creator"
+  tmux new-session -D -s $sname -A "cd /Users/alliso/Documents/obsidian-vaults/ctt/inbox && touch $filename && nvim $filename"
+  tmux send-keys -t $name ":ObsidianTemplate drawing_template"
+  tmux kill-session -t $name
+  open obsidian://vault/ctt/$filename
+}
+#+end_src
+*** Kafka
+#+begin_src conf :tangle zsh/custom/kafka.zsh
+function kgp() {
+  kafka-go-producer --topic=$(pwd | awk -F'/' '{print $NF}') --file=$1
+}
+#+end_src
+*** Zellij
+#+begin_src conf :tangle zsh/custom/zellij.zsh
+alias zj='zellij'
+
+function zjg(){
+         session=$(zellij ls -s | fzf)
+         zellij a $session
+}
+
+#+end_src

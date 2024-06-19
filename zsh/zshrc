@@ -19,6 +19,7 @@ export ZSH="/Users/alliso/Documents/dotfiles/zsh/oh-my-zsh"
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="powerlevel10k/powerlevel10k"
 CUSTOM_FUNCTIONS="/Users/alliso/Documents/dotfiles/zsh/custom"
+ZELLIJ_CONFIG_DIR="/Users/alliso/.config/zellij"
 
 plugins=(git)
 
