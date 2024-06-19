@@ -1,0 +1,19 @@
+layout {
+   pane size=1 borderless=true {
+            plugin location="zellij:compact-bar"
+   }
+   pane split_direction="vertical" {
+        pane split_direction="horizontal"{
+            pane command="zsh" start_suspended=true {
+                args "-c" "docker compose up -d"
+        }
+        pane command="zsh" start_suspended=true {
+            args "-c" "docker compose down"
+        }
+        }
+        pane
+    }
+    pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+    }
+}
