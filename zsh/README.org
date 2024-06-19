@@ -37,6 +37,7 @@ plugins=(git)
 * Sources
 #+BEGIN_SRC conf
 source $ZSH/oh-my-zsh.sh
+source $CUSTOM_FUNCTIONS/navigation.zsh
 source $CUSTOM_FUNCTIONS/mongo.zsh
 source $CUSTOM_FUNCTIONS/obsidian.zsh
 source $CUSTOM_FUNCTIONS/kafka.zsh
@@ -58,9 +59,6 @@ alias tat="tmux a -t"
 #+END_SRC
 * Custom aliases
 #+BEGIN_SRC conf
-alias cdr='cd $(ls /Users/alliso/Documents/CTT/ | fzf | xargs -I ARG echo /Users/alliso/Documents/CTT/ARG)'
-alias cds='cd $(ls /Users/alliso/Documents/services/ | fzf | xargs -I ARG echo /Users/alliso/Documents/services/ARG)'
-
 alias dbash='docker exec -it $(docker ps --format "{{.Names}}" | fzf ) bash'
 #+END_SRC
 * Fzf config
@@ -73,6 +71,11 @@ if type rg &> /dev/null; then
 fi
 #+END_SRC
 * Extra
+** Navigation
+#+begin_src conf :tangle custom/navigation.zsh
+alias cdr='cd $(ls /Users/alliso/Documents/CTT/ | fzf | xargs -I ARG echo /Users/alliso/Documents/CTT/ARG)'
+alias cds='cd $(ls /Users/alliso/Documents/services/ | fzf | xargs -I ARG echo /Users/alliso/Documents/services/ARG)'
+#+end_src
 ** Mongo
 #+begin_src conf :tangle custom/mongo.zsh
 alias mecfs='mongo-exporter-cli -mongo-from=$MONGO_STA -mongo-to=$MONGO_LOCAL'
