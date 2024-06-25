@@ -6,20 +6,20 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # If you come from bash you might have to change your $PATH.
-export PATH="$HOME/bin:/usr/local/bin:/Users/alliso/go/bin:$PATH"
+export PATH="$HOME/bin:/usr/local/bin:$HOME/go/bin:$PATH"
 
 export EDITOR="nvim"
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/alliso/Documents/dotfiles/zsh/oh-my-zsh"
+export ZSH="$HOME/Documents/dotfiles/zsh/oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="powerlevel10k/powerlevel10k"
-CUSTOM_FUNCTIONS="/Users/alliso/Documents/dotfiles/zsh/custom"
-ZELLIJ_CONFIG_DIR="/Users/alliso/.config/zellij"
+CUSTOM_FUNCTIONS="$HOME/Documents/dotfiles/zsh/custom"
+ZELLIJ_CONFIG_DIR="$HOME/.config/zellij"
 
 plugins=(git)
 

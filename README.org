@@ -44,7 +44,7 @@ fi
 ** Path and editor
 #+BEGIN_SRC conf :tangle zsh/zshrc
 # If you come from bash you might have to change your $PATH.
-export PATH="$HOME/bin:/usr/local/bin:/Users/alliso/go/bin:$PATH"
+export PATH="$HOME/bin:/usr/local/bin:$HOME/go/bin:$PATH"
 
 export EDITOR="nvim"
 #+END_SRC
@@ -52,15 +52,15 @@ export EDITOR="nvim"
 #+BEGIN_SRC conf :tangle zsh/zshrc
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/alliso/Documents/dotfiles/zsh/oh-my-zsh"
+export ZSH="$HOME/Documents/dotfiles/zsh/oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="powerlevel10k/powerlevel10k"
-CUSTOM_FUNCTIONS="/Users/alliso/Documents/dotfiles/zsh/custom"
-ZELLIJ_CONFIG_DIR="/Users/alliso/.config/zellij"
+CUSTOM_FUNCTIONS="$HOME/Documents/dotfiles/zsh/custom"
+ZELLIJ_CONFIG_DIR="$HOME/.config/zellij"
 #+END_SRC
 ** Plugins
 #+BEGIN_SRC conf :tangle zsh/zshrc
@@ -106,15 +106,15 @@ fi
 *** Navigation
 #+begin_src conf :tangle zsh/custom/navigation.zsh
 function cds(){
-   dir=$(ls /Users/alliso/Documents/services/ | fzf)
-   full_dir="/Users/alliso/Documents/services/$dir"
+   dir=$(ls $HOME/Documents/services/ | fzf)
+   full_dir="$HOME/Documents/services/$dir"
 
-   zellij options --session-name $dir --default-cwd $full_dir --default-layout /Users/alliso/Documents/dotfiles/zellij/services_layout.kdl --pane-frames true
+   zellij options --session-name $dir --default-cwd $full_dir --default-layout $HOME/Documents/dotfiles/zellij/services_layout.kdl --pane-frames true
 }
 
 function cdr(){
-   dir=$(ls /Users/alliso/Documents/CTT/ | fzf)
-   full_dir="/Users/alliso/Documents/CTT/$dir"
+   dir=$(ls $HOME/Documents/CTT/ | fzf)
+   full_dir="$HOME/Documents/CTT/$dir"
 
    zellij options --session-name $dir --default-cwd $full_dir
 }
@@ -133,7 +133,7 @@ function on(){
     return
   fi
   filename=$1.md
-  tmux new-session -A "cd /Users/alliso/Documents/obsidian-vaults/ctt/inbox && touch $filename && nvim $filename"
+  tmux new-session -A "cd $HOME/Documents/obsidian-vaults/ctt/inbox && touch $filename && nvim $filename"
 }
 
 function oe(){
@@ -144,7 +144,7 @@ function oe(){
   fi
   filename=$1.md
   sname="obsidian-creator"
-  tmux new-session -D -s $sname -A "cd /Users/alliso/Documents/obsidian-vaults/ctt/inbox && touch $filename && nvim $filename"
+  tmux new-session -D -s $sname -A "cd $HOME/Documents/obsidian-vaults/ctt/inbox && touch $filename && nvim $filename"
   tmux send-keys -t $name ":ObsidianTemplate drawing_template"
   tmux kill-session -t $name
   open obsidian://vault/ctt/$filename
