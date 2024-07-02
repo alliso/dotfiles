@@ -75,6 +75,7 @@ source $CUSTOM_FUNCTIONS/obsidian.zsh
 source $CUSTOM_FUNCTIONS/kafka.zsh
 source $CUSTOM_FUNCTIONS/zellij.zsh
 source $CUSTOM_FUNCTIONS/docker.zsh
+source $CUSTOM_FUNCTIONS/git.zsh
 source $CUSTOM_FUNCTIONS/secrets.zsh
 eval "$(zoxide init zsh)"
 #+END_SRC
@@ -113,10 +114,19 @@ function cds(){
 }
 
 function cdr(){
-   dir=$(ls $HOME/Documents/CTT/ | fzf)
-   full_dir="$HOME/Documents/CTT/$dir"
+    if [ $# -lt 1 ]
+    then
+        dir=$(ls $HOME/Documents/CTT/ | fzf)
+        full_dir="$HOME/Documents/CTT/$dir"
 
-   zellij options --session-name $dir --default-cwd $full_dir
+        zellij options --session-name $dir --default-cwd $full_dir
+        return
+    fi
+
+    dir=$(ls $HOME/Documents/CTT/ | fzf -q $1)
+    full_dir="$HOME/Documents/CTT/$dir"
+
+    zellij options --session-name $dir --default-cwd $full_dir
 }
 
 #+end_src
@@ -173,10 +183,22 @@ alias dlogs='docker logs -f $(docker ps --format "{{.Names}}" | fzf )'
 
 function dgp(){
     container=$(docker ps --format "table {{.Image}}\t{{.Ports}}" | fzf --header-lines=1 --header-first)
-    port=$(echo $container | awk -F'   ' '{print $2}' | tr ", " "\n" | grep -e '->' | fzf)
+    port=$(echo $container | awk '{print $NF}' | tr ", " "\n" | grep -e '->' | fzf)
     formatted_port=$(echo $port | awk -F'->' '{print $1}'| awk -F':' '{print $2}')
-    echo $formatted_port | pbcopy
+    echo -n $formatted_port | pbcopy
     echo "Port $formatted_port copied successfully"
+}
+#+end_src
+*** Git
+#+begin_src conf :tangle zsh/custom/git.zsh
+function iglo(){
+    git log --pretty=format:"%h %ad %<(8,trunc)%aN %s" --date=short | fzf --preview 'git show --color $(echo {} \
+        | grep -o "[a-f0-9]\{7\}" \
+        | sed -n "1p")' --bind='enter:execute(echo -n $(echo {} \
+        | grep -o "[a-f0-9]\{7\}" \
+        | sed -n "1p") | pbcopy)+abort' --bind='alt-e:execute(git show $(echo {} \
+        | grep -o "[a-f0-9]\{7\}" \
+        | sed -n "1p") | nvim -)'
 }
 #+end_src
 * Zellij

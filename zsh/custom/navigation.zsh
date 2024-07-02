@@ -6,8 +6,17 @@ function cds(){
 }
 
 function cdr(){
-   dir=$(ls $HOME/Documents/CTT/ | fzf)
-   full_dir="$HOME/Documents/CTT/$dir"
+    if [ $# -lt 1 ]
+    then
+        dir=$(ls $HOME/Documents/CTT/ | fzf)
+        full_dir="$HOME/Documents/CTT/$dir"
 
-   zellij options --session-name $dir --default-cwd $full_dir
+        zellij options --session-name $dir --default-cwd $full_dir
+        return
+    fi
+
+    dir=$(ls $HOME/Documents/CTT/ | fzf -q $1)
+    full_dir="$HOME/Documents/CTT/$dir"
+
+    zellij options --session-name $dir --default-cwd $full_dir
 }
