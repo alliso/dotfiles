@@ -31,6 +31,7 @@ source $CUSTOM_FUNCTIONS/kafka.zsh
 source $CUSTOM_FUNCTIONS/zellij.zsh
 source $CUSTOM_FUNCTIONS/docker.zsh
 source $CUSTOM_FUNCTIONS/git.zsh
+source $CUSTOM_FUNCTIONS/go-daily-log.zsh
 source $CUSTOM_FUNCTIONS/secrets.zsh
 eval "$(zoxide init zsh)"
 

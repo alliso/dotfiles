@@ -76,6 +76,7 @@ source $CUSTOM_FUNCTIONS/kafka.zsh
 source $CUSTOM_FUNCTIONS/zellij.zsh
 source $CUSTOM_FUNCTIONS/docker.zsh
 source $CUSTOM_FUNCTIONS/git.zsh
+source $CUSTOM_FUNCTIONS/go-daily-log.zsh
 source $CUSTOM_FUNCTIONS/secrets.zsh
 eval "$(zoxide init zsh)"
 #+END_SRC
@@ -200,6 +201,11 @@ function zja(){
          session=$(zellij ls -s | fzf)
          zellij a $session
 }
+
+function zjs(){
+         session_name=$(pwd | awk -F'/' '{print $NF}')
+         zj --session $session_name
+}
 #+end_src
 *** Docker
 #+begin_src conf :tangle zsh/custom/docker.zsh
@@ -225,6 +231,10 @@ function iglo(){
         | grep -o "[a-f0-9]\{7\}" \
         | sed -n "1p") | nvim -)'
 }
+#+end_src
+*** Go daily log
+#+begin_src conf :tangle zsh/custom/go-daily-log.zsh
+    alias gdl='go-daily-log'
 #+end_src
 * Zellij
 ** Config
