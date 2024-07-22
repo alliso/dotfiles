@@ -4,7 +4,7 @@ function ov(){
         dir=$(ls $HOME/Documents/obsidian-vaults/ | fzf)
         full_dir="$HOME/Documents/obsidian-vaults/$dir"
 
-        session=$(zellij ls | grep $dir | wc -l)
+        session=$(zellij ls | awk '{print $1}' | awk -F'-' '{print $NF}' | grep -E 'ctt' | wc -l)
         if [ $session -eq 1 ]
         then
             echo $session
