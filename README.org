@@ -44,7 +44,7 @@ fi
 ** Path and editor
 #+BEGIN_SRC conf :tangle zsh/zshrc
 # If you come from bash you might have to change your $PATH.
-export PATH="$HOME/bin:/usr/local/bin:$HOME/go/bin:$PATH"
+export PATH="$PATH:$HOME/bin:/usr/local/bin:$HOME/go/bin:/nix/var/nix/profiles/default/bin:$HOME/.nix-profile/bin"
 
 export EDITOR="nvim"
 #+END_SRC
@@ -151,6 +151,7 @@ function cdr(){
 *** Mongo
 #+begin_src conf :tangle zsh/custom/mongo.zsh
 alias mecfs='mongo-exporter-cli -mongo-from=$MONGO_STA -mongo-to=$MONGO_LOCAL'
+alias mecfp='mongo-exporter-cli -mongo-from=$MONGO_PRO -mongo-to=$MONGO_LOCAL'
 #+end_src
 *** Obsidian
 #+begin_src conf :tangle zsh/custom/obsidian.zsh
