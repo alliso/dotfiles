@@ -33,6 +33,7 @@ source $CUSTOM_FUNCTIONS/docker.zsh
 source $CUSTOM_FUNCTIONS/git.zsh
 source $CUSTOM_FUNCTIONS/go-daily-log.zsh
 source $CUSTOM_FUNCTIONS/secrets.zsh
+source /etc/static/zshrc
 eval "$(zoxide init zsh)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
