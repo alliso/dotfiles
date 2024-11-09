@@ -81,7 +81,7 @@
   ;; Add any additional setup here if needed
   )
 
-(setq doom-font (font-spec :size 18 :family "JetBrains Mono"))
+(setq doom-font (font-spec :size 18 :family (cl-find-if #'doom-font-exists-p'("JetBrains Mono" "JetBrainsMono NF"))))
 
 (setq display-line-numbers-type 'relative)
 
