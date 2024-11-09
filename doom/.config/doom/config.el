@@ -94,7 +94,7 @@
                                           "typst-lsp"))))))
 
 
-(setq lombok-jar-path "/Users/alliso/Documents/dotfiles/lombok.jar")
+(setq lombok-jar-path (expand-file-name "~/dotfiles/dependencies/lombok.jar"))
 (setq lsp-java-vmargs `(
 "-XX:+UseParallelGC"
 "-XX:GCTimeRatio=4"

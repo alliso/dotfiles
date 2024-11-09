@@ -996,7 +996,7 @@ layout {
                                           "typst-lsp"))))))
 
 
-(setq lombok-jar-path "/Users/alliso/dotfiles/dependecies/lombok.jar")
+(setq lombok-jar-path (expand-file-name "~/dotfiles/dependencies/lombok.jar"))
 (setq lsp-java-vmargs `(
 "-XX:+UseParallelGC"
 "-XX:GCTimeRatio=4"
@@ -1008,6 +1008,7 @@ layout {
 )
 )
 #+end_src
+
 *** custom.el
 #+begin_src elisp :tangle doom/.config/doom/custom.el
 (custom-set-variables
