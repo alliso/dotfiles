@@ -11,14 +11,14 @@ export PATH="$PATH:$HOME/bin:/usr/local/bin:$HOME/go/bin:/nix/var/nix/profiles/d
 export EDITOR="nvim"
 
 # Path to your oh-my-zsh installation.
-export ZSH="$HOME/Documents/dotfiles/zsh/oh-my-zsh"
+export ZSH="$HOME/dotfiles/zsh/oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="powerlevel10k/powerlevel10k"
-CUSTOM_FUNCTIONS="$HOME/Documents/dotfiles/zsh/custom"
+CUSTOM_FUNCTIONS="$HOME/dotfiles/zsh/custom"
 ZELLIJ_CONFIG_DIR="$HOME/.config/zellij"
 
 plugins=(git)
@@ -37,11 +37,6 @@ eval "$(zoxide init zsh)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-alias tmux="TERM=xterm-256color tmux"
-export TERM=xterm-256color
-
-alias tat="tmux a -t"
 
 
 

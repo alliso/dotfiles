@@ -1,39 +1,39 @@
 # dotfiles
 * Wezterm
 ** Imports and config initialized
-#+BEGIN_SRC lua :tangle wezterm/wezterm.lua
+#+BEGIN_SRC lua :tangle wezterm/.wezterm.lua
 local wezterm = require("wezterm")
 
 local config = {}
 #+END_SRC
 ** Set graphic options
 *** Set theme to Solarized Dark
-#+BEGIN_SRC lua :tangle wezterm/wezterm.lua
+#+BEGIN_SRC lua :tangle wezterm/.wezterm.lua
 config.color_scheme = "Solarized (dark) (terminal.sexy)"
 #+END_SRC
 
 *** Disable ligatures
-#+BEGIN_SRC lua :tangle wezterm/wezterm.lua
+#+BEGIN_SRC lua :tangle wezterm/.wezterm.lua
 config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
 #+END_SRC
 
 *** Disable terminal tabs
-#+BEGIN_SRC lua :tangle wezterm/wezterm.lua
+#+BEGIN_SRC lua :tangle wezterm/.wezterm.lua
 config.enable_tab_bar = false
 #+END_SRC
 
 *** Set font size
-#+BEGIN_SRC lua :tangle wezterm/wezterm.lua
+#+BEGIN_SRC lua :tangle wezterm/.wezterm.lua
 config.font_size = 14
 #+END_SRC
 
 ** Returns config
-#+BEGIN_SRC lua :tangle wezterm/wezterm.lua
+#+BEGIN_SRC lua :tangle wezterm/.wezterm.lua
 return config
 #+END_SRC
 * Zsh
 ** Enable p10k
-#+BEGIN_SRC conf :tangle zsh/zshrc
+#+BEGIN_SRC conf :tangle zshrc/.zshrc
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -42,32 +42,32 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 #+END_SRC
 ** Path and editor
-#+BEGIN_SRC conf :tangle zsh/zshrc
+#+BEGIN_SRC conf :tangle zshrc/.zshrc
 # If you come from bash you might have to change your $PATH.
 export PATH="$PATH:$HOME/bin:/usr/local/bin:$HOME/go/bin:/nix/var/nix/profiles/default/bin:$HOME/.nix-profile/bin"
 
 export EDITOR="nvim"
 #+END_SRC
 ** Oh-my-zsh config
-#+BEGIN_SRC conf :tangle zsh/zshrc
+#+BEGIN_SRC conf :tangle zshrc/.zshrc
 
 # Path to your oh-my-zsh installation.
-export ZSH="$HOME/Documents/dotfiles/zsh/oh-my-zsh"
+export ZSH="$HOME/dotfiles/zsh/oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="powerlevel10k/powerlevel10k"
-CUSTOM_FUNCTIONS="$HOME/Documents/dotfiles/zsh/custom"
+CUSTOM_FUNCTIONS="$HOME/dotfiles/zsh/custom"
 ZELLIJ_CONFIG_DIR="$HOME/.config/zellij"
 #+END_SRC
 ** Plugins
-#+BEGIN_SRC conf :tangle zsh/zshrc
+#+BEGIN_SRC conf :tangle zshrc/.zshrc
 plugins=(git)
 #+END_SRC
 ** Sources
-#+BEGIN_SRC conf :tangle zsh/zshrc
+#+BEGIN_SRC conf :tangle zshrc/.zshrc
 source $ZSH/oh-my-zsh.sh
 source $CUSTOM_FUNCTIONS/navigation.zsh
 source $CUSTOM_FUNCTIONS/mongo.zsh
@@ -78,26 +78,18 @@ source $CUSTOM_FUNCTIONS/docker.zsh
 source $CUSTOM_FUNCTIONS/git.zsh
 source $CUSTOM_FUNCTIONS/go-daily-log.zsh
 source $CUSTOM_FUNCTIONS/secrets.zsh
-source /etc/static/zshrc
 eval "$(zoxide init zsh)"
 #+END_SRC
 ** Prompt p10k
-#+BEGIN_SRC conf :tangle zsh/zshrc
+#+BEGIN_SRC conf :tangle zshrc/.zshrc
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 #+END_SRC
-** Tmux config
-#+BEGIN_SRC conf :tangle zsh/zshrc
-alias tmux="TERM=xterm-256color tmux"
-export TERM=xterm-256color
-
-alias tat="tmux a -t"
-#+END_SRC
 ** Custom aliases
-#+BEGIN_SRC conf :tangle zsh/zshrc
+#+BEGIN_SRC conf :tangle zshrc/.zshrc
 #+END_SRC
 ** Fzf config
-#+BEGIN_SRC conf :tangle zsh/zshrc
+#+BEGIN_SRC conf :tangle zshrc/.zshrc
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 if type rg &> /dev/null; then
@@ -112,7 +104,7 @@ function cds(){
    dir=$(ls $HOME/Documents/services/ | fzf)
    full_dir="$HOME/Documents/services/$dir"
 
-   zellij options --session-name $dir --default-cwd $full_dir --default-layout $HOME/Documents/dotfiles/zellij/services_layout.kdl --pane-frames true
+   zellij options --session-name $dir --default-cwd $full_dir --default-layout $HOME/dotfiles/zellij/services_layout.kdl --pane-frames true
 }
 
 function cdr(){
@@ -225,7 +217,7 @@ function iglo(){
 * Zellij
 ** Config
 *** Default config
-#+begin_src conf :tangle zellij/config.kdl
+#+begin_src conf :tangle zellij/.config/zellij/config.kdl
 keybinds {
     normal {
         // uncomment this and adjust key if using copy_on_select=false
@@ -611,7 +603,7 @@ theme "solarized-dark"
 #+end_src
 ** Layouts
 *** Services
-#+begin_src conf :tangle zellij/services_layout.kdl
+#+begin_src conf :tangle zellij/.config/zellij/services_layout.kdl
 layout {
    pane size=1 borderless=true {
             plugin location="zellij:compact-bar"
@@ -633,7 +625,7 @@ layout {
 }
 #+end_src
 *** Obsidian vaults
-#+begin_src conf :tangle zellij/obsidian_layout.kdl
+#+begin_src conf :tangle zellij/.config/zellij/obsidian_layout.kdl
 layout {
     pane size=1 borderless=true {
         plugin location="zellij:compact-bar"
@@ -646,79 +638,3 @@ layout {
     }
 }
 #+end_src
-* Tmux
-** Windows settings
-#+BEGIN_SRC conf :tangle tmux/tmux.conf
-# 0 is too far from ` ;)
-set -g base-index 1
-# Automatically set window title
-set-window-option -g automatic-rename on
-set-option -g set-titles on
-#+END_SRC
-** Vim keybindings
-#+BEGIN_SRC conf :tangle tmux/tmux.conf
-
-#set -g default-terminal screen-256color
-set -g status-keys vi
-set -g history-limit 10000
-
-setw -g mode-keys vi
-#setw -g mouse on
-setw -g monitor-activity on
-#+END_SRC
-** Split windows
-#+BEGIN_SRC conf :tangle tmux/tmux.conf
-bind-key v split-window -h
-bind-key s split-window -v
-#+END_SRC
-** Resize panes
-*** Resize panes by 1 pixel
-#+BEGIN_SRC conf :tangle tmux/tmux.conf
-bind-key M-j resize-pane -D
-bind-key M-k resize-pane -U
-bind-key M-h resize-pane -L
-bind-key M-l resize-pane -R
-#+END_SRC
-*** Resize panes by 5 pixels
-#+BEGIN_SRC conf :tangle tmux/tmux.conf
-
-bind-key J resize-pane -D 5
-bind-key K resize-pane -U 5
-bind-key H resize-pane -L 5
-bind-key L resize-pane -R 5
-#+END_SRC
-** Select panes
-*** Vim style pane selection
-#+BEGIN_SRC conf :tangle tmux/tmux.conf
-bind h select-pane -L
-bind j select-pane -D
-bind k select-pane -U
-bind l select-pane -R
-#+END_SRC
-*** Use Alt+vim keys without prefix to swith panes
-#+BEGIN_SRC conf :tangle tmux/tmux.conf
-bind -n M-h select-pane -L
-bind -n M-j select-pane -D
-bind -n M-k select-pane -U
-bind -n M-l select-pane -R
-#+END_SRC
-** Theme config
-#+BEGIN_SRC conf :tangle tmux/tmux.conf
-set -g status-bg black
-set -g status-fg white
-set -g status-interval 1
-set -g status-left-length 30
-set -g status-left '#[fg=green](#S) #(whoami) '
-set -g status-right '#[default] #[fg=white]%H:%M:%S#[default]'
-#+END_SRC
-
-** Random settings
-*** Reload tmux config with r
-#+BEGIN_SRC conf :tangle tmux/tmux.conf
-bind r source-file ~/.tmux.conf
-#+END_SRC
-
-*** No delay for escape key press
-#+BEGIN_SRC conf :tangle tmux/tmux.conf
-set -sg escape-time 0
-#+END_SRC
