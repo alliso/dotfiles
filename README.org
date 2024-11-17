@@ -258,6 +258,8 @@
 (package! typst-ts-mode
   :recipe (:type git :host codeberg :repo "meow_king/typst-ts-mode"
                  :files (:defaults "*.el")))
+
+(package! obsidian)
 #+end_src
 *** config.el
 #+begin_src elisp :tangle doom/.config/doom/config.el
@@ -368,8 +370,33 @@
 ,(concat "-javaagent:" lombok-jar-path)
 )
 )
+(use-package obsidian
+  :ensure t
+  :demand t
+  :config
+  (obsidian-specify-path "~/obsidian-vaults/pkm")
+  (global-obsidian-mode t)
+  :custom
+  ;; This directory will be used for `obsidian-capture' if set.
+  (obsidian-inbox-directory "testing-emacs")
+  ;; Create missing files in inbox? - when clicking on a wiki link
+  ;; t: in inbox, nil: next to the file with the link
+  ;; default: t
+  ;(obsidian-wiki-link-create-file-in-inbox nil)
+  ;; The directory for daily notes (file name is YYYY-MM-DD.md)
+  (obsidian-daily-notes-directory "testint-daily-emacs")
+  ;; Directory of note templates, unset (nil) by default
+  ;(obsidian-templates-directory "Templates")
+  ;; Daily Note template name - requires a template directory. Default: Daily Note Template.md
+  ;(obsidian-daily-note-template "Daily Note Template.md")
+  :bind (:map obsidian-mode-map
+  ;; Replace C-c C-o with Obsidian.el's implementation. It's ok to use another key binding.
+  ("C-c C-o" . obsidian-follow-link-at-point)
+  ;; Jump to backlinks
+  ("C-c C-b" . obsidian-backlink-jump)
+  ;; If you prefer you can use `obsidian-insert-link'
+  ("C-c C-l" . obsidian-insert-wikilink)))
 #+end_src
-
 *** custom.el
 #+begin_src elisp :tangle doom/.config/doom/custom.el
 (custom-set-variables
@@ -389,38 +416,6 @@
 #+begin_src conf :tangle nix/.config/nix/nix.conf
 experimental-features = nix-command flakes
 #+end_src
-* Wezterm
-** Imports and config initialized
-#+BEGIN_SRC lua :tangle wezterm/.wezterm.lua
-local wezterm = require("wezterm")
-
-local config = {}
-#+END_SRC
-** Set graphic options
-*** Set theme to Solarized Dark
-#+BEGIN_SRC lua :tangle wezterm/.wezterm.lua
-config.color_scheme = "Solarized (dark) (terminal.sexy)"
-#+END_SRC
-
-*** Disable ligatures
-#+BEGIN_SRC lua :tangle wezterm/.wezterm.lua
-config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
-#+END_SRC
-
-*** Disable terminal tabs
-#+BEGIN_SRC lua :tangle wezterm/.wezterm.lua
-config.enable_tab_bar = false
-#+END_SRC
-
-*** Set font size
-#+BEGIN_SRC lua :tangle wezterm/.wezterm.lua
-config.font_size = 14
-#+END_SRC
-
-** Returns config
-#+BEGIN_SRC lua :tangle wezterm/.wezterm.lua
-return config
-#+END_SRC
 * Zsh
 ** Enable p10k
 #+BEGIN_SRC conf :tangle zshrc/.zshrc
