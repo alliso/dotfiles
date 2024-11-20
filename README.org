@@ -416,6 +416,80 @@
 #+begin_src conf :tangle nix/.config/nix/nix.conf
 experimental-features = nix-command flakes
 #+end_src
+* Tmux
+** Windows settings
+#+BEGIN_SRC conf :tangle tmux/.config/tmux/tmux.conf
+# 0 is too far from ` ;)
+set -g base-index 1
+# Automatically set window title
+set-window-option -g automatic-rename on
+set-option -g set-titles on
+#+END_SRC
+** Vim keybindings
+#+BEGIN_SRC conf :tangle tmux/.config/tmux/tmux.conf
+#set -g default-terminal screen-256color
+set -g status-keys vi
+set -g history-limit 10000
+
+setw -g mode-keys vi
+#setw -g mouse on
+setw -g monitor-activity on
+#+END_SRC
+** Split windows
+#+BEGIN_SRC conf :tangle tmux/.config/tmux/tmux.conf
+bind-key v split-window -h
+bind-key s split-window -v
+#+END_SRC
+** Resize panes
+*** Resize panes by 1 pixel
+#+BEGIN_SRC conf :tangle tmux/.config/tmux/tmux.conf
+bind-key M-j resize-pane -D
+bind-key M-k resize-pane -U
+bind-key M-h resize-pane -L
+bind-key M-l resize-pane -R
+#+END_SRC
+*** Resize panes by 5 pixels
+#+BEGIN_SRC conf :tangle tmux/.config/tmux/tmux.conf
+
+bind-key J resize-pane -D 5
+bind-key K resize-pane -U 5
+bind-key H resize-pane -L 5
+bind-key L resize-pane -R 5
+#+END_SRC
+** Select panes
+*** Vim style pane selection
+#+BEGIN_SRC conf :tangle tmux/.config/tmux/tmux.conf
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+#+END_SRC
+*** Use Alt+vim keys without prefix to swith panes
+#+BEGIN_SRC conf :tangle tmux/.config/tmux/tmux.conf
+bind -n M-h select-pane -L
+bind -n M-j select-pane -D
+bind -n M-k select-pane -U
+bind -n M-l select-pane -R
+#+END_SRC
+** Theme config
+#+BEGIN_SRC conf :tangle tmux/.config/tmux/tmux.conf
+set -g status-bg black
+set -g status-fg white
+set -g status-interval 1
+set -g status-left-length 30
+set -g status-left '#[fg=green](#S) #(whoami) '
+set -g status-right '#[default] #[fg=white]%H:%M:%S#[default]'
+#+END_SRC
+** Random settings
+*** Reload tmux config with r
+#+BEGIN_SRC conf :tangle tmux/.config/tmux/tmux.conf
+bind r source-file ~/.config/tmux/tmux.conf
+#+END_SRC
+
+*** No delay for escape key press
+#+BEGIN_SRC conf :tangle tmux/.config/tmux/tmux.conf
+set -sg escape-time 0
+#+END_SRC
 * Zsh
 ** Enable p10k
 #+BEGIN_SRC conf :tangle zshrc/.zshrc
@@ -432,6 +506,9 @@ fi
 export PATH="$PATH:$HOME/bin:/usr/local/bin:$HOME/go/bin:/nix/var/nix/profiles/default/bin:$HOME/.nix-profile/bin"
 
 export EDITOR="nvim"
+
+# Java lsp add lombok dependency
+export JDTLS_JVM_ARGS="-javaagent:/Users/alliso/dotfiles/dependencies/lombok.jar"
 #+END_SRC
 ** Oh-my-zsh config
 #+BEGIN_SRC conf :tangle zshrc/.zshrc
@@ -449,7 +526,7 @@ ZELLIJ_CONFIG_DIR="$HOME/.config/zellij"
 #+END_SRC
 ** Plugins
 #+BEGIN_SRC conf :tangle zshrc/.zshrc
-plugins=(git)
+plugins=(git tmux)
 #+END_SRC
 ** Sources
 #+BEGIN_SRC conf :tangle zshrc/.zshrc
@@ -482,6 +559,10 @@ if type rg &> /dev/null; then
   export FZF_DEFAULT_OPTS='-m --height 50% --border'
 fi
 #+END_SRC
+** Tmux autostart
+#+begin_src conf :tangle zshrc/.zshrc
+ZSH_TMUX_AUTOSTART=true
+#+end_src
 ** Extra
 *** Navigation
 #+begin_src conf :tangle zsh/custom/navigation.zsh
@@ -493,42 +574,71 @@ function cds(){
 }
 
 function cdr(){
-    if [ $# -lt 1 ]
-    then
-        dir=$(ls $HOME/Documents/CTT/ | fzf)
-        full_dir="$HOME/Documents/CTT/$dir"
-
-        session=$(zellij ls | grep $dir | wc -l)
-        if [ $session -eq 1 ]
-        then
-            echo $session
-            zellij attach $dir
-            return
+        if [[ $# -eq 1 ]]; then
+                selected=$1
+        else
+                selected=$(find ~/Documents/proyectos ~/Documents/CTT ~/Documents/CTT/files -mindepth 1 -maxdepth 1 -type d | fzf)
         fi
 
-        zellij options --session-name $dir --default-cwd $full_dir
-        return
-    fi
+        if [[ -z $selected ]]; then
+                return
+        fi
 
-    dir=$(ls $HOME/Documents/CTT/ | fzf -q $1)
-    full_dir="$HOME/Documents/CTT/$dir"
+        selected_name=$(basename "$selected" | tr . _)
+        tmux_running=$(pgrep tmux)
 
-    session=$(zellij ls | grep $dir | wc -l)
-    if [ $session -eq 1 ]
-    then
-        echo $session
-        zellij attach $dir
-        return
-    fi
+        if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+                tmux new-session -s $selected_name -c $selected
+                return
+        fi
 
-    zellij options --session-name $dir --default-cwd $full_dir
+        if ! tmux has-session -t=$selected_name 2> /dev/null; then
+                tmux new-session -ds $selected_name -c $selected
+        fi
+
+
+        tmux switch-client -t $selected_name
 }
 
+zle -N cdr cdr
+bindkey -s ^f "cdr\n"
 
+function open_default_session(){
+        selected_name="default"
+
+        if [[ -z $TMUX ]] ; then
+                tmux new-session -As $selected_name -c $HOME
+                return
+        fi
+
+        if ! tmux has-session -t=$selected_name 2> /dev/null; then
+                tmux new-session -As $selected_name -c $HOME
+                return
+        fi
+
+
+        tmux switch-client -t $selected_name
+}
+zle -N open_default_session open_default_session
+bindkey -s ^h "open_default_session\n"
+
+function tmux_attach_to_session(){
+        selected_session=$(tmux ls -F#{session_name} | fzf)
+
+        if [[ -z $TMUX ]] ; then
+                tmux attach -t $selected_session
+                return
+        fi
+
+        tmux switch-client -t $selected_session
+}
+zle -N tmux_attach_to_session tmux_attach_to_session
+bindkey -s ^s "tmux_attach_to_session\n"
 #+end_src
 *** Mongo
 #+begin_src conf :tangle zsh/custom/mongo.zsh
-alias mecfs='mongo-exporter-cli -mongo-from=$MONGO_STA -mongo-to=$MONGO_LOCAL'
+alias mecfs='mongo-exporter-cli -mongo-from=$MONGO_ST
+A -mongo-to=$MONGO_LOCAL'
 alias mecfp='mongo-exporter-cli -mongo-from=$MONGO_PRO -mongo-to=$MONGO_LOCAL'
 #+end_src
 *** Obsidian

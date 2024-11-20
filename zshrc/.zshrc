@@ -10,6 +10,9 @@ export PATH="$PATH:$HOME/bin:/usr/local/bin:$HOME/go/bin:/nix/var/nix/profiles/d
 
 export EDITOR="nvim"
 
+# Java lsp add lombok dependency
+export JDTLS_JVM_ARGS="-javaagent:/Users/alliso/dotfiles/dependencies/lombok.jar"
+
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/dotfiles/zsh/oh-my-zsh"
 
@@ -21,7 +24,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 CUSTOM_FUNCTIONS="$HOME/dotfiles/zsh/custom"
 ZELLIJ_CONFIG_DIR="$HOME/.config/zellij"
 
-plugins=(git)
+plugins=(git tmux)
 
 source $ZSH/oh-my-zsh.sh
 source $CUSTOM_FUNCTIONS/navigation.zsh
@@ -46,3 +49,5 @@ if type rg &> /dev/null; then
   export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
   export FZF_DEFAULT_OPTS='-m --height 50% --border'
 fi
+
+ZSH_TMUX_AUTOSTART=true
